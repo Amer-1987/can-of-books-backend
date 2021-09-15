@@ -10,6 +10,9 @@ const cors = require('cors');
 
 server.use(cors());
 
+// to access req.body
+server.use(express.json());
+
 const PORT = process.env.PORT;
 
 
@@ -29,7 +32,7 @@ async function main() {
 
   LibraryModel = mongoose.model('book', BookSchema);
 
-  seedingData();
+  // seedingData();
 }
 
 
@@ -41,7 +44,7 @@ async function seedingData() {
     description: 'Healing for what is in the breasts',
     status: 'came down from heaven',
     email: 'ameralqanahrah1238@gmail.com'
-    
+
   });
 
   const secondBook = new LibraryModel({
@@ -70,6 +73,11 @@ server.get('/', (req, res) => {
 })
 
 server.get('/getBook', getBookFunction);
+server.post('/addBook', addBookFunction);
+server.delete('/deleteBook/:id', deleteBookFunction);
+
+
+
 //  
 function getBookFunction(req, res) {
   const email = req.query.email;
@@ -84,6 +92,64 @@ function getBookFunction(req, res) {
   })
 }
 
+async function addBookFunction(req, res) {
+  //  console.log(req.query); it is empty because we use post, so we use (reg.body)
+  const title = req.body.title;
+  const description = req.body.description;
+  const status = req.body.status;
+  const email = req.body.email;
+  // console.log(req.body);
+
+
+  //we can use this line instesd of previous 4 line up :(shorter way)if your var hav the same of key name in schema  
+  // const {title,description,email}=req.body;
+
+  await LibraryModel.create({
+    title: title,
+    description: description,
+    status: status,
+    email: email
+  });
+
+  // we can use this line instesd of 4 line up if your var have the same of key name in schema  
+
+  // await LibraryModel.create({title,description,status,email});
+
+
+  LibraryModel.find({ email: email }, (error, result) => {
+    if (error) {
+      console.log('404 ERROR');
+    }
+    else {
+      // console.log(result);
+      res.send(result);
+    }
+  })
+}
+
+
+async function deleteBookFunction(req, res) {
+  //  console.log(req.query); it is empty because we use post, so we use (reg.params) contain id that we want to delete it
+  const bookId = req.params.id;
+  const email = req.query.email;
+
+
+  await LibraryModel.deleteOne({ _id: bookId }, (err, result) => {
+    console.log(result);
+    LibraryModel.find({ email: email }, (error, result) => {
+      if (error) {
+        console.log('404 ERROR');
+      }
+      else {
+        // console.log(result);
+        res.send(result);
+      }
+    })
+  })
+
+
+
+}
 
 server.listen(PORT, () => {
   console.log(`I'm listening on Port ${PORT}`)
