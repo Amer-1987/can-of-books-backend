@@ -75,6 +75,7 @@ server.get('/', (req, res) => {
 server.get('/getBook', getBookFunction);
 server.post('/addBook', addBookFunction);
 server.delete('/deleteBook/:id', deleteBookFunction);
+server.put('/updateBook/:id', updateBookFunction);
 
 
 
@@ -146,9 +147,36 @@ async function deleteBookFunction(req, res) {
       }
     })
   })
+}
 
 
+async function updateBookFunction(req, res) {
+  //  console.log(req.query); it is empty because we use findByIdAndUpdate, so we use (reg.params) contain id that we want to delete it
+  const bookId = req.params.id;
+  const title = req.body.title;
+  const description = req.body.description;
+  const status = req.body.status;
+  const email = req.body.email;
 
+  await LibraryModel.findByIdAndUpdate(
+    bookId,
+    { title, description, status, email }, (err, result1) => {
+    })
+    .catch(err => {
+      console.log(Error);
+    })
+    .then(() => {
+      // console.log(email);
+      LibraryModel.find({ email: email }, (err, result) => {
+        if (error) {
+          console.log('404 ERROR');
+        }
+        else {
+          console.log(result);
+          res.send(result);
+        }
+      })
+    })
 }
 
 server.listen(PORT, () => {
