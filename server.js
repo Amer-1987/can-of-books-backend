@@ -1,13 +1,10 @@
 'use strict';
 
-
 require('dotenv').config();
 const express = require('express');
-
 const mongoose = require('mongoose');
 const server = express();
 const cors = require('cors');
-
 server.use(cors());
 
 // to access req.body
@@ -15,12 +12,12 @@ server.use(express.json());
 
 const PORT = process.env.PORT;
 
-
 main().catch(err => console.log(err));
 
 let LibraryModel;
+
 async function main() {
-  await mongoose.connect('mongodb://localhost:27017/Book');
+  await mongoose.connect(process.env.KEY);
 
   const BookSchema = new mongoose.Schema({
     title: String,
@@ -167,7 +164,7 @@ async function updateBookFunction(req, res) {
     })
     .then(() => {
       // console.log(email);
-      LibraryModel.find({ email: email }, (err, result) => {
+      LibraryModel.find({ email: email }, (error, result) => {
         if (error) {
           console.log('404 ERROR');
         }
