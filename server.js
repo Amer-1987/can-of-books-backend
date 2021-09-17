@@ -38,7 +38,7 @@ async function seedingData() {
 
   const firstBook = new LibraryModel({
     title: 'Quran',
-    description: 'Healing for what is in the breasts',
+    description: 'Healing for what is in the breasts.The Quran (sometimes spelled Qur’an or Koran) is considered the most important holy book among Muslims.It contains some basic information that is found in the Hebrew Bible as well as revelations that were given to Muhammad. The text is considered the sacred word of God and supercedes any previous writings.',
     status: 'came down from heaven',
     email: 'ameralqanahrah1238@gmail.com'
 
@@ -53,7 +53,7 @@ async function seedingData() {
 
   const thirdBook = new LibraryModel({
     title: 'BRAVE NEW WORLD ',
-    description: 'This is possibly the most famous book to take its title from a Shakespeare play – in this case, The Tempest.',
+    description: 'This is possibly the most famous book to take its title from a Shakespeare play – in this case, The Tempest.Brave New World is a dystopian social science fiction novel by English author Aldous Huxley, written in 1931 and published in 1932. Largely set in a futuristic World State, whose citizens are environmentally engineered into an intelligence-based social hierarchy, the novel anticipates huge scientific advancements in reproductive technology',
     status: 'puplished',
     email: 'ameralqanahrah1238@gmail.com'
   });
